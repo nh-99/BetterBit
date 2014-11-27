@@ -1,5 +1,5 @@
 #include "pebble.h"
-
+static GFont s_weather_font;
 // POST variables
 
 // Received variables
@@ -18,6 +18,7 @@ static AppTimer *timer;
 static AppSync sync;
 static uint8_t sync_buffer[124];
 
+static TextLayer *s_weather_layer;
 static TextLayer *text_date_layer;
 static TextLayer *text_time_layer;
 static TextLayer *text_price_layer;
@@ -164,6 +165,17 @@ static void window_load(Window *window) {
 	font_last_price_small = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_DIAVLO_MEDIUM_29));
 	font_last_price_large = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_DIAVLO_MEDIUM_35));
 	
+	
+	s_weather_layer = text_layer_create(GRect(0, 65, 144-0, 168-130));
+	text_layer_set_background_color(s_weather_layer, GColorClear);
+	text_layer_set_text_color(s_weather_layer, GColorWhite);
+	text_layer_set_text_alignment(s_weather_layer, GTextAlignmentCenter);
+	text_layer_set_text(s_weather_layer, "Loading...");
+	
+	s_weather_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_DIAVLO_MEDIUM_19));
+	text_layer_set_font(s_weather_layer, s_weather_font);
+	layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_weather_layer));
+						
 	text_price_layer = text_layer_create(GRect(0, 0, 144-0, 168-0));
 	text_layer_set_text_color(text_price_layer, GColorWhite);
 	text_layer_set_background_color(text_price_layer, GColorClear);
@@ -273,6 +285,7 @@ static void init(void) {
 
 static void deinit(void) {
 	window_destroy(window);
+	text_layer_destroy(s_weather_layer);
 }
 
 int main(void){
