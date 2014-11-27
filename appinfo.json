@@ -1,0 +1,73 @@
+{
+    "appKeys": {
+        "ask": 3,
+        "bid": 4,
+        "currency": 1,
+        "exchange": 2,
+        "invert": 6,
+        "last": 5
+    },
+    "capabilities": [
+        "location",
+        "configurable"
+    ],
+    "companyName": "jrvc",
+    "longName": "BetterBit",
+    "projectType": "native",
+    "resources": {
+        "media": [
+            {
+                "file": "images/menu_icon_bitwallet.png",
+                "menuIcon": true,
+                "name": "IMAGE_MENU_ICON",
+                "type": "png"
+            },
+            {
+                "compatibility": "2.7",
+                "file": "fonts/Diavlo_LIGHT_II_37.ttf",
+                "name": "FONT_DIAVLO_LIGHT_15",
+                "type": "font"
+            },
+            {
+                "characterRegex": "[0-9:.]",
+                "compatibility": "2.7",
+                "file": "fonts/Diavlo_BLACK_II_37.ttf",
+                "name": "FONT_DIAVLO_HEAVY_40",
+                "type": "font"
+            },
+            {
+                "characterRegex": "[0-9:. +-]",
+                "compatibility": "2.7",
+                "file": "fonts/Diavlo_MEDIUM_II_37.ttf",
+                "name": "FONT_DIAVLO_MEDIUM_29",
+                "type": "font"
+            },
+            {
+                "compatibility": "2.7",
+                "file": "fonts/Diavlo_MEDIUM_II_37.ttf",
+                "name": "FONT_DIAVLO_MEDIUM_19",
+                "type": "font"
+            },
+            {
+                "characterRegex": "[0-9:. +-]",
+                "compatibility": "2.7",
+                "file": "fonts/Diavlo_MEDIUM_II_37.ttf",
+                "name": "FONT_DIAVLO_MEDIUM_35",
+                "type": "font"
+            },
+            {
+                "compatibility": "2.7",
+                "file": "fonts/Diavlo_BOOK_II_37.ttf",
+                "name": "FONT_DIAVLO_15",
+                "type": "font"
+            }
+        ]
+    },
+    "shortName": "BetterBit",
+    "uuid": "0A477443-FB0A-4039-967F-7608276EEC45",
+    "versionCode": 3,
+    "versionLabel": "1.0",
+    "watchapp": {
+        "watchface": true
+    }
+}
