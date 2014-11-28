@@ -17,29 +17,16 @@
     "resources": {
         "media": [
             {
-                "file": "images/menu_icon_bitwallet.png",
-                "menuIcon": true,
-                "name": "IMAGE_MENU_ICON",
-                "type": "png"
-            },
-            {
                 "compatibility": "2.7",
-                "file": "fonts/Diavlo_LIGHT_II_37.ttf",
-                "name": "FONT_DIAVLO_LIGHT_15",
-                "type": "font"
-            },
-            {
-                "characterRegex": "[0-9:.]",
-                "compatibility": "2.7",
-                "file": "fonts/Diavlo_BLACK_II_37.ttf",
-                "name": "FONT_DIAVLO_HEAVY_40",
+                "file": "fonts/Diavlo_BOOK_II_37.ttf",
+                "name": "FONT_DIAVLO_15",
                 "type": "font"
             },
             {
                 "characterRegex": "[0-9:. +-]",
                 "compatibility": "2.7",
                 "file": "fonts/Diavlo_MEDIUM_II_37.ttf",
-                "name": "FONT_DIAVLO_MEDIUM_29",
+                "name": "FONT_DIAVLO_MEDIUM_35",
                 "type": "font"
             },
             {
@@ -52,14 +39,27 @@
                 "characterRegex": "[0-9:. +-]",
                 "compatibility": "2.7",
                 "file": "fonts/Diavlo_MEDIUM_II_37.ttf",
-                "name": "FONT_DIAVLO_MEDIUM_35",
+                "name": "FONT_DIAVLO_MEDIUM_29",
+                "type": "font"
+            },
+            {
+                "characterRegex": "[0-9:.]",
+                "compatibility": "2.7",
+                "file": "fonts/Diavlo_BLACK_II_37.ttf",
+                "name": "FONT_DIAVLO_HEAVY_40",
                 "type": "font"
             },
             {
                 "compatibility": "2.7",
-                "file": "fonts/Diavlo_BOOK_II_37.ttf",
-                "name": "FONT_DIAVLO_15",
+                "file": "fonts/Diavlo_LIGHT_II_37.ttf",
+                "name": "FONT_DIAVLO_LIGHT_15",
                 "type": "font"
+            },
+            {
+                "file": "images/menu_icon_bitwallet.png",
+                "menuIcon": true,
+                "name": "IMAGE_MENU_ICON",
+                "type": "png"
             }
         ]
     },
