@@ -1,4 +1,8 @@
 #include "pebble.h"
+
+#define KEY_TEMPERATURE 0
+#define KEY_CONDITIONS 7
+
 static GFont s_weather_font;
 // POST variables
 
@@ -12,7 +16,6 @@ enum {
 	INVERT_COLOR_KEY = 6
 };
 	
-
 static Window *window;
 static AppTimer *timer;
 static AppSync sync;
@@ -25,7 +28,7 @@ static TextLayer *text_price_layer;
 //static TextLayer *text_currency_layer;
 //static TextLayer *text_buy_label_layer;
 //static TextLayer *text_buy_price_layer;
-//static TextLayer *text_sell_label_layer;
+//static TextLayer *text_sell_label_layer;layer);
 //static TextLayer *text_sell_price_layer;
 
 static InverterLayer *inverter_layer = NULL;
@@ -166,7 +169,7 @@ static void window_load(Window *window) {
 	font_last_price_large = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_DIAVLO_MEDIUM_35));
 	
 	
-	s_weather_layer = text_layer_create(GRect(0, 65, 144-0, 168-130));
+	s_weather_layer = text_layer_create(GRect(0, 65, 144, 168));
 	text_layer_set_background_color(s_weather_layer, GColorClear);
 	text_layer_set_text_color(s_weather_layer, GColorWhite);
 	text_layer_set_text_alignment(s_weather_layer, GTextAlignmentCenter);
@@ -248,6 +251,17 @@ static void window_load(Window *window) {
 	//send_cmd();
 	timer = app_timer_register(2000, timer_callback, NULL);
 	//set_timer();
+		if(t->tm_min % 30 == 0) {
+    // Begin dictionary
+    DictionaryIterator *iter;
+    app_message_outbox_begin(&iter);
+
+    // Add a key-value pair
+    dict_write_uint8(iter, 0, 0);
+
+    // Send the message!
+    app_message_outbox_send();
+};
 }
 
 
@@ -259,11 +273,55 @@ static void window_unload(Window *window) {
 	text_layer_destroy(text_date_layer);
 	text_layer_destroy(text_time_layer);
 	text_layer_destroy(text_price_layer);
+	text_layer_destroy(s_weather_layer);
 /*	text_layer_destroy(text_currency_layer);
 	text_layer_destroy(text_buy_label_layer);
 	text_layer_destroy(text_buy_price_layer);
 	text_layer_destroy(text_sell_label_layer);
 	text_layer_destroy(text_sell_price_layer); */
+}
+
+static void inbox_received_callback(DictionaryIterator *iterator, void *context) {
+  // Store incoming information
+  static char temperature_buffer[8];
+  static char conditions_buffer[32];
+  static char weather_layer_buffer[64];
+  // Read first item
+  Tuple *t = dict_read_first(iterator);
+
+  // For all items
+  while(t != NULL) {
+    // Which key was received?
+    switch(t->key) {
+    case KEY_TEMPERATURE:
+		snprintf(temperature_buffer, sizeof(temperature_buffer), "%dC", (int)t->value->int32);
+      break;
+    case KEY_CONDITIONS:
+		snprintf(conditions_buffer, sizeof(conditions_buffer), "%s", t->value->cstring);
+      break;
+    default:
+      APP_LOG(APP_LOG_LEVEL_ERROR, "Key %d not recognized!", (int)t->key);
+      break;
+    }
+
+    // Look for next item
+    t = dict_read_next(iterator);
+  }
+	// Assemble full string and display
+	snprintf(weather_layer_buffer, sizeof(weather_layer_buffer), "%s, %s", temperature_buffer, conditions_buffer);
+	text_layer_set_text(s_weather_layer, weather_layer_buffer);
+}
+
+static void inbox_dropped_callback(AppMessageResult reason, void *context) {
+  APP_LOG(APP_LOG_LEVEL_ERROR, "Message dropped!");
+}
+
+static void outbox_failed_callback(DictionaryIterator *iterator, AppMessageResult reason, void *context) {
+  APP_LOG(APP_LOG_LEVEL_ERROR, "Outbox send failed!");
+}
+
+static void outbox_sent_callback(DictionaryIterator *iterator, void *context) {
+  APP_LOG(APP_LOG_LEVEL_INFO, "Outbox send success!");
 }
 
 static void init(void) {
@@ -281,11 +339,19 @@ static void init(void) {
 	
 	const bool animated = true;
 	window_stack_push(window, animated);
+	
+	// Register callbacks
+	app_message_register_inbox_received(inbox_received_callback);
+	app_message_register_inbox_dropped(inbox_dropped_callback);
+	app_message_register_outbox_failed(outbox_failed_callback);
+	app_message_register_outbox_sent(outbox_sent_callback);
+	
+	// Open AppMessage
+	app_message_open(app_message_inbox_size_maximum(), app_message_outbox_size_maximum());
 }
 
 static void deinit(void) {
 	window_destroy(window);
-	text_layer_destroy(s_weather_layer);
 }
 
 int main(void){
@@ -293,5 +359,3 @@ int main(void){
 	app_event_loop();
 	deinit();
 }
-
-

@@ -2,10 +2,12 @@
     "appKeys": {
         "ask": 3,
         "bid": 4,
+        "conditions": 7,
         "currency": 1,
         "exchange": 2,
         "invert": 6,
-        "last": 5
+        "last": 5,
+        "temperature": 0
     },
     "capabilities": [
         "location",
